@@ -1,11 +1,20 @@
 import argparse
+import base64
+import json
 from util import extract_public_key, verify_artifact_signature
 from merkle_proof import DefaultHasher, verify_consistency, verify_inclusion, compute_leaf_hash
 import requests
-import base64
-import json
 
 def get_log_entry(log_index=None, debug=False):
+    """_summary_
+
+    Args:
+        log_index (_type_, optional): _description_. Defaults to None.
+        debug (bool, optional): _description_. Defaults to False.
+
+    Returns:
+        _type_: _description_
+    """    
     try:
         # return current checkpoint if no log_index specified
         # otherwise return the log entry at that specifified index
