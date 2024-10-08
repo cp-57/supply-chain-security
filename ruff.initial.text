@@ -1,0 +1,41 @@
+main.py:16:5: E722 Do not use bare `except`
+   |
+14 |         else:
+15 |             data = requests.get(f"https://rekor.sigstore.dev/api/v1/log/entries?logIndex={log_index}")
+16 |     except:
+   |     ^^^^^^ E722
+17 |         print("Fetch error.")
+   |
+
+main.py:83:5: E722 Do not use bare `except`
+   |
+81 |     try:
+82 |         data = requests.get(f"https://rekor.sigstore.dev/api/v1/log/proof?firstSize={prev_checkpoint['treeSize']}&lastSize={current_tree_size}&treeID={prev_checkpoint['treeID']}")
+83 |     except:
+   |     ^^^^^^ E722
+84 |         print("Fetch error in consistency hash function.")
+   |
+
+merkle_proof.py:25:29: E741 Ambiguous variable name: `l`
+   |
+23 |         return h.digest()
+24 | 
+25 |     def hash_children(self, l, r):
+   |                             ^ E741
+26 |         h = self.new()
+27 |         b = bytes([RFC6962_NODE_HASH_PREFIX]) + l + r
+   |
+
+util.py:57:32: F841 [*] Local variable `e` is assigned to but never used
+   |
+55 |             ec.ECDSA(hashes.SHA256())
+56 |         )
+57 |     except InvalidSignature as e:
+   |                                ^ F841
+58 |         print("Signature is invalid")
+59 |     except Exception as e:
+   |
+   = help: Remove assignment to unused variable `e`
+
+Found 4 errors.
+[*] 1 fixable with the `--fix` option.
