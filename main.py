@@ -207,17 +207,24 @@ def inclusion(log_index, artifact_filepath, debug=False):
     signature = decoded_data["spec"]["signature"]["content"]
     # extract bytes from signature and pass to the function
     signature = base64.b64decode(signature)
-
-    verify_artifact_signature(signature, public_key, artifact_filepath)
+    try:
+        verify_artifact_signature(signature, public_key, artifact_filepath)
+        print("Inclusion verified.")
+    except Exception as e:
+        print("Validation failed")
+        return
 
     index, tree_size, leaf_hash, hashes, root_hash = get_verification_proof(log_index)
 
     inclusion_object = InclusionProof(
         index, tree_size, leaf_hash, hashes, root_hash
     )
+    try:
+        verify_inclusion(DefaultHasher, inclusion_object, debug)
+        print("Inclusion verified.")
+    except Exception as e:
+        print("Validation failed")
 
-    verify_inclusion(DefaultHasher, inclusion_object, debug)
-    print("Inclusion verified.")
 
 
 def get_latest_checkpoint(debug=False):
