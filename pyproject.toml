@@ -1,10 +1,15 @@
 [tool.poetry]
-name = "supply-chain-security"
-version = "0.1.0"
+name = "supply-chain-rekor-monitor"
+version = "4.0.0"
 description = "This project can be used to verify inclusion of artifacts, whether a correct signature is present, or verify consistency in regards to the Rekor transparency logs."
 authors = ["cp-57 <109479938+cp-57@users.noreply.github.com>"]
 license = "Apache 2.0"
 readme = "README.md"
+package-mode = true
+
+packages = [
+    { include = "supply-chain-rekor-monitor" }
+]
 
 [tool.poetry.dependencies]
 python = "^3.9"
