@@ -5,9 +5,11 @@ between older and latest checkpoints.
 
 
 Usage Instructions
-python3 main.py --inclusion 123456789 --artifact artifact.md
+supply-chain-rekor-monitor -c
 
-python3 main.py --consistency --tree-id TREE_ID --tree-size TREE_SIZE --root-hash ROOT_HASH
+supply-chain-rekor-monitor --inclusion 123456789 --artifact artifact.md
+
+supply-chain-rekor-monitor --consistency --tree-id TREE_ID --tree-size TREE_SIZE --root-hash ROOT_HASH
 
 Installation Steps
 git clone https://github.com/cp-57/supply-chain-security.git
