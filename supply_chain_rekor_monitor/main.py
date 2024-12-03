@@ -65,8 +65,8 @@ import json
 from typing import List
 import requests
 from requests.exceptions import Timeout, HTTPError, RequestException
-from util import extract_public_key, verify_artifact_signature
-from merkle_proof import (
+from supply_chain_rekor_monitor.util import extract_public_key, verify_artifact_signature
+from supply_chain_rekor_monitor.merkle_proof import (
     DefaultHasher,
     verify_consistency,
     verify_inclusion,
