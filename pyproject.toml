@@ -16,6 +16,7 @@ python = "^3.9"
 requests = "^2.32.3"
 cryptography = "^43.0.3"
 jsonschema = "^4.23.0"
+cyclonedx-bom = "^5.1.1"
 
 [tool.poetry.dev-dependencies]
 mypy = "^1.13.0"
