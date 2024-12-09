@@ -8,6 +8,7 @@ Functions:
     - verify_inclusion: Verifies inclusion of a leaf in a Merkle tree
     - compute_leaf_hash: Computes leaf hash for an entry
 """
+
 import hashlib
 import binascii
 import base64
@@ -28,7 +29,8 @@ class Hasher:
         Initialize the Hasher with a given hash function.
 
         Args:
-            hash_func (function, optional): The hashing function to use. Defaults to hashlib.sha256.
+            hash_func (function, optional): The hashing function to use.
+            Defaults to hashlib.sha256.
         """
         self.hash_func = hash_func
 
@@ -93,6 +95,7 @@ class Hasher:
 
 # DefaultHasher is a SHA256 based LogHasher
 DefaultHasher = Hasher(hashlib.sha256)
+
 
 def verify_consistency(hasher, merkle_proof):
     """
@@ -159,7 +162,6 @@ def verify_consistency(hasher, merkle_proof):
     hash2 = chain_inner(hasher, seed, bytearray_proof[:inner], mask)
     hash2 = chain_border_right(hasher, hash2, bytearray_proof[inner:])
     verify_match(hash2, root2)
-
 
 
 def verify_match(calculated, expected):
@@ -285,7 +287,8 @@ class RootMismatchError(Exception):
         String representation of the RootMisMatchError
 
         Returns:
-            str: Message indicating the mismatch between the expected and calculated roots
+            str: Message indicating the mismatch between the expected
+            and calculated roots
         """
         return f"calculated root:\n{self.calculated_root}\n \
             does not match expected root:\n{self.expected_root}"
@@ -324,6 +327,7 @@ def root_from_inclusion_proof(hasher, index, size, leaf_hash, proof):
     res = chain_border_right(hasher, res, proof[inner:])
     return res
 
+
 def verify_inclusion(hasher, inclusion_proof, debug=False):
     """
     Verify inclusion of a leaf in a Merkle tree
@@ -341,7 +345,11 @@ def verify_inclusion(hasher, inclusion_proof, debug=False):
     bytearray_leaf = bytes.fromhex(inclusion_proof.leaf_hash)
 
     calc_root = root_from_inclusion_proof(
-        hasher, inclusion_proof.index, inclusion_proof.size, bytearray_leaf, bytearray_proof
+        hasher,
+        inclusion_proof.index,
+        inclusion_proof.size,
+        bytearray_leaf,
+        bytearray_proof,
     )
     verify_match(calc_root, bytearray_root)
 
