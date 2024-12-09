@@ -1,10 +1,8 @@
 import subprocess
 import pytest
-import requests
-from jsonschema import validate, ValidationError
-import subprocess
+from jsonschema import validate
 
-from main import *
+from supply_chain_rekor_monitor.main import get_log_entry, inclusion
 
 
 def test_get_log_entry_schema():
@@ -14,7 +12,7 @@ def test_get_log_entry_schema():
     schema = {
         "type": "object",
         "patternProperties": {
-            "^[a-fA-F0-9]+$": {  
+            "^[a-fA-F0-9]+$": {
                 "type": "object",
                 "properties": {
                     "body": {"type": "string"},
@@ -30,30 +28,43 @@ def test_get_log_entry_schema():
                                     "checkpoint": {"type": "string"},
                                     "hashes": {
                                         "type": "array",
-                                        "items": {"type": "string"}
+                                        "items": {"type": "string"},
                                     },
                                     "logIndex": {"type": "integer"},
                                     "rootHash": {"type": "string"},
-                                    "treeSize": {"type": "integer"}
+                                    "treeSize": {"type": "integer"},
                                 },
-                                "required": ["checkpoint", "hashes", "logIndex", "rootHash", "treeSize"]
+                                "required": [
+                                    "checkpoint",
+                                    "hashes",
+                                    "logIndex",
+                                    "rootHash",
+                                    "treeSize",
+                                ],
                             },
-                            "signedEntryTimestamp": {"type": "string"}
+                            "signedEntryTimestamp": {"type": "string"},
                         },
-                        "required": ["inclusionProof", "signedEntryTimestamp"]
-                    }
+                        "required": ["inclusionProof", "signedEntryTimestamp"],
+                    },
                 },
-                "required": ["body", "integratedTime", "logID", "logIndex", "verification"]
+                "required": [
+                    "body",
+                    "integratedTime",
+                    "logID",
+                    "logIndex",
+                    "verification",
+                ],
             }
         },
-        "additionalProperties": False
+        "additionalProperties": False,
     }
-    log_entry = get_log_entry(129028977) # example ID
+    log_entry = get_log_entry(129028977)  # example ID
     validate(instance=log_entry, schema=schema)
+
 
 def test_get_log_entry_with_invalid_id():
 
-    log_entry = get_log_entry(999999999999) # invalid ID
+    log_entry = get_log_entry(999999999999)  # invalid ID
     if log_entry:
         pytest.fail("Expect None with Invalid ID in get_log_entry()")
 
@@ -62,7 +73,7 @@ def test_inclusion_real():
     """
     Test the inclusion functionality with real, correct arguments and data.
     """
-    log_index = 133597043  
+    log_index = 133597043
     artifact_filepath = "../artifact.md"
 
     try:
@@ -74,38 +85,49 @@ def test_inclusion_real():
 
 def test_inclusion_with_invalid_log_index():
     """
-    Test the inclusion functionality with an invalid log index to ensure it fails.
+    Test the inclusion functionality with an invalid log index to
+    ensure it fails.
     """
     invalid_log_index = 9999999  # Invalid (does not exist)
-    artifact_filepath = "../artifact.md" 
+    artifact_filepath = "../artifact.md"
 
-    with pytest.raises(Exception) as excinfo:
+    with pytest.raises(Exception):
         inclusion(invalid_log_index, artifact_filepath, debug=False)
+
 
 def test_inclusion_with_incorrect_log_index():
     """
-    Test the inclusion functionality with an incorrect log index (one that exists but is different) to ensure it fails.
+    Test the inclusion functionality with an incorrect log index
+    (one that exists but is different) to ensure it fails.
     """
     invalid_log_index = 133597042  # Exists but is incorrect
-    artifact_filepath = "../artifact.md" 
+    artifact_filepath = "../artifact.md"
 
-    with pytest.raises(Exception) as excinfo:
+    with pytest.raises(Exception):
         inclusion(invalid_log_index, artifact_filepath, debug=False)
-    
+
 
 def test_inclusion_real_subprocess():
     """
-    Test the inclusion functionality using subprocess with a real, correct log index and artifact.
+    Test the inclusion functionality using subprocess with a real, correct
+    log index and artifact.
     """
-    log_index = "133597043"  
+    log_index = "133597043"
     artifact_filepath = "../artifact.md"
 
     result = subprocess.run(
-        ["python3", "../main.py", "--inclusion", log_index, "--artifact", artifact_filepath, "--debug"],
+        [
+            "python3",
+            "../main.py",
+            "--inclusion",
+            log_index,
+            "--artifact",
+            artifact_filepath,
+            "--debug",
+        ],
         capture_output=True,
-        text=True
+        text=True,
     )
 
     assert result.returncode == 0, f"Inclusion verification failed: {result.stderr}"
     assert "Inclusion verified" in result.stdout
-
