@@ -8,15 +8,18 @@ This module provides functions to interact with the Rekor transparency log. It i
 
 Functions:
     - get_log_entry(log_index, debug=False): Fetch a specific log entry from Rekor
-    - get_verification_proof(log_index, debug=False): Fetch verification proof for a log entry
+    - get_verification_proof(log_index, debug=False): Fetch verification proof
+      for a log entry
     - inclusion(log_index, artifact_filepath, debug=False):
         Verify inclusion of an entry in the Rekor log
     - get_latest_checkpoint(debug=False):
         Fetch the latest checkpoint from Rekor
     - get_consistency_data(prev_checkpoint, current_tree_size, debug=False):
         Fetch consistency proof data
-    - consistency(prev_checkpoint, debug=False): Verify the consistency between two checkpoints
-    - main(): Parses command-line arguments and runs the appropriate verification operations
+    - consistency(prev_checkpoint, debug=False): Verify the consistency
+      between two checkpoints
+    - main(): Parses command-line arguments and runs the appropriate
+      verification operations
 
 External Dependencies:
     - argparse: For parsing command-line arguments
@@ -29,7 +32,8 @@ Command-Line Arguments:
     - --inclusion:
         Verify inclusion of an entry in the Rekor log using log index and artifact file
     - --artifact: Filepath to the artifact
-    - --consistency: Verify consistency between provided checkpoint and the latest checkpoint
+    - --consistency: Verify consistency between provided checkpoint
+      and the latest checkpoint
     - --tree-id: Tree ID of the previous checkpoint for consistency proof
     - --tree-size: Tree size of the previous checkpoint for consistency proof
     - --root-hash: Root hash of the previous checkpoint for consistency proof
@@ -39,14 +43,16 @@ Usage:
         python main.py --inclusion <log_index> --artifact <artifact_filepath>
 
     2. To verify the consistency of two checkpoints:
-    python main.py --consistency --tree-id <tree_id> --tree-size <tree_size> --root-hash <root_hash>
+    python main.py --consistency --tree-id <tree_id> --tree-size <tree_size>
+      --root-hash <root_hash>
 
     3. To fetch the latest checkpoint:
         python main.py --checkpoint
 
 Exceptions:
     - requests.Timeout: Raised when request to Rekor times out
-    - requests.HTTPError: Raised when Rekor responds with an HTTP error code (e.g., 404, 500)
+    - requests.HTTPError: Raised when Rekor responds with an HTTP error code
+      (e.g., 404, 500)
     - requests.RequestException: Catches all other requests-related errors
 
 Example:
@@ -65,7 +71,10 @@ import json
 from typing import List
 import requests
 from requests.exceptions import Timeout, HTTPError, RequestException
-from supply_chain_rekor_monitor.util import extract_public_key, verify_artifact_signature
+from supply_chain_rekor_monitor.util import (
+    extract_public_key,
+    verify_artifact_signature,
+)
 from supply_chain_rekor_monitor.merkle_proof import (
     DefaultHasher,
     verify_consistency,
@@ -93,6 +102,7 @@ class MerkleProof:
     root1: str
     root2: str
 
+
 @dataclass
 class InclusionProof:
     """
@@ -105,6 +115,7 @@ class InclusionProof:
         proof (List[str]): List of hex-encoded inclusion proof hashes
         root (str): The expected root hash of the Merkle tree (hex-encoded)
     """
+
     index: int
     size: int
     leaf_hash: str
@@ -181,12 +192,13 @@ def inclusion(log_index, artifact_filepath, debug=False):
     """
     Verify the inclusion of an entry in the Rekor Transparency Log.
 
-    This function verifies whether a specific log entry is included in the transparency log, using
-    the specified log index and artifact file.
+    This function verifies whether a specific log entry is included in the
+    transparency log, using the specified log index and artifact file.
 
     Args:
         log_index (int): The index of the log entry to verify.
-        artifact_filepath (str): The file path of the artifact used for signature verification.
+        artifact_filepath (str): The file path of the artifact used for
+          signature verification.
         debug (bool, optional): If True, enables debug mode. Defaults to False.
     """
 
@@ -210,21 +222,18 @@ def inclusion(log_index, artifact_filepath, debug=False):
     try:
         verify_artifact_signature(signature, public_key, artifact_filepath)
         print("Inclusion verified.")
-    except Exception as e:
+    except Exception:
         print("Validation failed")
         return
 
     index, tree_size, leaf_hash, hashes, root_hash = get_verification_proof(log_index)
 
-    inclusion_object = InclusionProof(
-        index, tree_size, leaf_hash, hashes, root_hash
-    )
+    inclusion_object = InclusionProof(index, tree_size, leaf_hash, hashes, root_hash)
     try:
         verify_inclusion(DefaultHasher, inclusion_object, debug)
         print("Inclusion verified.")
-    except Exception as e:
+    except Exception:
         print("Validation failed")
-
 
 
 def get_latest_checkpoint(debug=False):
@@ -317,7 +326,7 @@ def consistency(prev_checkpoint, debug=False):
         size2=current_tree_size,
         proof=hashes,
         root1=prev_checkpoint["rootHash"],
-        root2=root_hash
+        root2=root_hash,
     )
 
     verify_consistency(DefaultHasher, merkle_proof)

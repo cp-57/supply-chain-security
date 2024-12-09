@@ -1,20 +1,21 @@
 """
 Utility Module for Rekor Verification
 
-Provides functions forextracting public keys from certificates and verifying artifact signatures.
+Provides functions forextracting public keys from certificates and
+verifying artifact signatures.
 
 This module provides functions to:
 1. Extract a public key from an X.509 certificate in PEM format
-2. Verify the signature of an artifact 
+2. Verify the signature of an artifact
 
 Functions:
     - extract_public_key(cert): Extracts and returns public key
-    - verify_artifact_signature(signature, public_key, artifact_filename): Verifies artifact 
-    signature using public key and artifact file.
+    - verify_artifact_signature(signature, public_key, artifact_filename):
+    Verifies artifact signature using public key and artifact file.
 
 Dependencies:
     - cryptography: Python library for cryptographic operations
-    - x509, hashes, ec, serialization: Specific modules and primitives used from the 
+    - x509, hashes, ec, serialization: Specific modules and primitives used from the
     cryptography library
 
 Exceptions:
@@ -28,6 +29,7 @@ Usage:
     2. To verify signature of an artifact:
         verify_artifact_signature(signature_bytes, public_key_bytes, "example.md")
 """
+
 from cryptography import x509
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import serialization
@@ -40,26 +42,27 @@ from cryptography.exceptions import InvalidSignature
 
 def extract_public_key(cert):
     """
-        Extracts and returns the public key from PEM certificate
+    Extracts and returns the public key from PEM certificate
 
-        Args:
-            cert (bytes): Certificate in PEM format
+    Args:
+        cert (bytes): Certificate in PEM format
 
-        Returns:
-            bytes: Public key in PEM format.
+    Returns:
+        bytes: Public key in PEM format.
 
-        Raises:
-            ValueError: If the certificate cannot be loaded or is invalid
+    Raises:
+        ValueError: If the certificate cannot be loaded or is invalid
     """
     certificate = x509.load_pem_x509_certificate(cert, default_backend())
     public_key = certificate.public_key()
 
     pem_public_key = public_key.public_bytes(
         encoding=serialization.Encoding.PEM,
-        format=serialization.PublicFormat.SubjectPublicKeyInfo
+        format=serialization.PublicFormat.SubjectPublicKeyInfo,
     )
 
     return pem_public_key
+
 
 def verify_artifact_signature(signature, public_key, artifact_filename):
     """
@@ -85,11 +88,7 @@ def verify_artifact_signature(signature, public_key, artifact_filename):
         data = data_file.read()
 
     try:
-        public_key.verify(
-            signature,
-            data,
-            ec.ECDSA(hashes.SHA256())
-        )
+        public_key.verify(signature, data, ec.ECDSA(hashes.SHA256()))
     except InvalidSignature as e:
         raise ValueError(f"Validation failed {e}")
     print("Validation success.")
