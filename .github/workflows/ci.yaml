@@ -22,10 +22,14 @@ jobs:
           python-version: '3.9'
 
       - name: Install Dependencies
-        run: pip install ruff black
+        run: pip install ruff black pylint
 
       - name: Run Ruff Linter
         run: ruff check .
       
       - name: Run Black
         run: black . --check 
+
+      - name: Run Pylint
+        run: |
+          pylint $(find . -name "*.py")
