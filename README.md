@@ -1,6 +1,7 @@
 [![releases](https://github.com/cp-57/supply-chain-security/actions/workflows/cd.yaml/badge.svg)](https://github.com/cp-57/supply-chain-security/actions) [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/cp-57/supply-chain-security/badge)](https://scorecard.dev/viewer/?uri=github.com/cp-57/supply-chain-security) [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/9794/badge)](https://www.bestpractices.dev/projects/9794)
 
 Project Description
+
 This program verifies inclusion of artifact entries in a public transparency log, Rekor. 
 It also can verify that the correct signature is present in the transparency log or verify the consistency 
 between older and latest checkpoints. 
