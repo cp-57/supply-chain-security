@@ -1,3 +1,7 @@
+"""
+    Basic tests for the inclusion() function and related components.
+"""
+
 import subprocess
 import pytest
 from jsonschema import validate
@@ -63,7 +67,9 @@ def test_get_log_entry_schema():
 
 
 def test_get_log_entry_with_invalid_id():
-
+    """
+    Test the get log entry functionality with an invalid id
+    """
     log_entry = get_log_entry(999999999999)  # invalid ID
     if log_entry:
         pytest.fail("Expect None with Invalid ID in get_log_entry()")
@@ -74,12 +80,12 @@ def test_inclusion_real():
     Test the inclusion functionality with real, correct arguments and data.
     """
     log_index = 133597043
-    artifact_filepath = "../artifact.md"
+    artifact_filepath = "./supply_chain_rekor_monitor/artifact.md"
 
     try:
         inclusion(log_index, artifact_filepath, debug=True)
         print("Inclusion verified with real data.")
-    except Exception as e:
+    except AssertionError as e:
         pytest.fail(f"Inclusion verification failed with real data: {e}")
 
 
@@ -113,12 +119,13 @@ def test_inclusion_real_subprocess():
     log index and artifact.
     """
     log_index = "133597043"
-    artifact_filepath = "../artifact.md"
+    artifact_filepath = "supply_chain_rekor_monitor/artifact.md"
 
     result = subprocess.run(
         [
             "python3",
-            "../main.py",
+            "-m",
+            "supply_chain_rekor_monitor.main",
             "--inclusion",
             log_index,
             "--artifact",
@@ -127,6 +134,7 @@ def test_inclusion_real_subprocess():
         ],
         capture_output=True,
         text=True,
+        check=True,
     )
 
     assert result.returncode == 0, f"Inclusion verification failed: {result.stderr}"

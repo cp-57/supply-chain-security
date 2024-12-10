@@ -90,5 +90,5 @@ def verify_artifact_signature(signature, public_key, artifact_filename):
     try:
         public_key.verify(signature, data, ec.ECDSA(hashes.SHA256()))
     except InvalidSignature as e:
-        raise ValueError(f"Validation failed {e}")
+        raise ValueError(f"Validation failed {e}") from e
     print("Validation success.")

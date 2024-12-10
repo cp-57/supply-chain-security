@@ -74,12 +74,14 @@ from requests.exceptions import Timeout, HTTPError, RequestException
 from supply_chain_rekor_monitor.util import (
     extract_public_key,
     verify_artifact_signature,
+    InvalidSignature,
 )
 from supply_chain_rekor_monitor.merkle_proof import (
     DefaultHasher,
     verify_consistency,
     verify_inclusion,
     compute_leaf_hash,
+    RootMismatchError,
 )
 
 
@@ -222,7 +224,7 @@ def inclusion(log_index, artifact_filepath, debug=False):
     try:
         verify_artifact_signature(signature, public_key, artifact_filepath)
         print("Inclusion verified.")
-    except Exception:
+    except InvalidSignature:
         print("Validation failed")
         return
 
@@ -232,7 +234,7 @@ def inclusion(log_index, artifact_filepath, debug=False):
     try:
         verify_inclusion(DefaultHasher, inclusion_object, debug)
         print("Inclusion verified.")
-    except Exception:
+    except RootMismatchError:
         print("Validation failed")
 
 
@@ -288,7 +290,8 @@ def get_consistency_data(prev_checkpoint, current_tree_size, debug):
         if debug:
             print("Gathering consistency data")
         response = requests.get(
-            f"https://rekor.sigstore.dev/api/v1/log/proof?firstSize={prev_checkpoint['treeSize']}"
+            f"https://rekor.sigstore.dev/api/v1/log/proof?"
+            f"firstSize={prev_checkpoint['treeSize']}"
             f"&lastSize={current_tree_size}&treeID={prev_checkpoint['treeID']}",
             timeout=5,
         )
