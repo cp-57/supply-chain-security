@@ -1,4 +1,4 @@
-name: Build, Publish, and Attest on Tag
+name: releases
 
 on:
   push:
