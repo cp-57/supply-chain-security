@@ -47,3 +47,6 @@ jobs:
       - name: Run TruffleHog
         run: trufflehog git file://. --no-verification --fail
 
+      - name: Run PyTest
+        run: PYTHONPATH=. pytest --cov=.
+
