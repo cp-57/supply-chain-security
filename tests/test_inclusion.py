@@ -140,7 +140,7 @@ def test_inclusion_real_subprocess():
     )
 
     if result.returncode != 0:
-        raise RuntimeError(f"Checkpoint retrieval failed: {result.stderr}")
+        raise RuntimeError(f"Inclusion functionality failed: {result.stderr}")
 
     if "Inclusion verified" not in result.stdout:
         raise ValueError("Inclusion verification failed")
