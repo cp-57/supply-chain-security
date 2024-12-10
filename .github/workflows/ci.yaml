@@ -44,5 +44,5 @@ jobs:
       - name: Run TruffleHog
         run: |
           pip install trufflehog3
-          trufflehog git file://. || exit 1
+          trufflehog3 git file://. || exit 1
 
