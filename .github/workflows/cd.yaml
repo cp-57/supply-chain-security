@@ -38,7 +38,7 @@ jobs:
         id: get_wheel_name
         run: |
           WHEEL_NAME=$(ls dist/*.whl)
-          echo "WHEEL_NAME=$WHEEL_NAME" >> $GITHUB_ENV
+          echo "WHEEL_NAME=${WHEEL_NAME}" | sed 's/ /\\ /g' >> $GITHUB_ENV
 
       - name: Publish to PyPI
         env:
