@@ -1,7 +1,11 @@
+"""
+    Basic tests for the get_latest_checkpoint() function and related components.
+"""
+
+import json
 import subprocess
 import pytest
 from jsonschema import validate, ValidationError
-import json
 from supply_chain_rekor_monitor.main import get_latest_checkpoint
 
 
@@ -83,7 +87,10 @@ def test_get_latest_checkpoint_subprocess():
     }
 
     result = subprocess.run(
-        ["python3", "../main.py", "--checkpoint"], capture_output=True, text=True
+        ["python3", "-m", "supply_chain_rekor_monitor.main", "--checkpoint"],
+        capture_output=True,
+        text=True,
+        check=True,
     )
 
     assert result.returncode == 0, f"Checkpoint retrieval failed: {result.stderr}"
