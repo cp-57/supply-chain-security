@@ -1,4 +1,4 @@
-![releases](https://github.com/cp-57/supply-chain-security/blob/main/.github/workflows/cd.yaml/badge.svg)
+[![releases](https://github.com/cp-57/supply-chain-security/actions/workflows/cd.yml/badge.svg)](https://github.com/cp-57/supply-chain-security/actions)
 
 Project Description
 This program verifies inclusion of artifact entries in a public transparency log, Rekor. 
