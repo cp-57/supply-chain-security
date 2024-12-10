@@ -41,7 +41,7 @@ jobs:
       - name: Run Bandit 
         run: poetry run bandit -r .
 
-    - name: Run TruffleHog
-      run: 
-        pip install trufflehog
-        trufflehog filesystem --directory=. || exit 1
+      - name: Run TruffleHog
+        run: |
+          pip install trufflehog
+          trufflehog filesystem --directory=. || exit 1
