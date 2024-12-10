@@ -37,3 +37,6 @@ jobs:
 
       - name: Run Pylint
         run: poetry run pylint .
+      
+      - name: Run Bandit 
+        run: poetry run bandit -r .
