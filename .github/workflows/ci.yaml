@@ -1,4 +1,4 @@
-name: Ruff Linting
+name: Python Linting and Formatting
 
 on:
   push:
@@ -21,16 +21,19 @@ jobs:
         with:
           python-version: '3.9'
 
+      - name: Install Poetry
+        run: |
+          pip install poetry
+
       - name: Install Dependencies
-        run: pip install ruff black pylint
+        run: |
+          poetry install
 
       - name: Run Ruff Linter
-        run: ruff check .
+        run: poetry run ruff check .
 
       - name: Run Black
-        run: black . --check 
+        run: poetry run black . --check
 
       - name: Run Pylint
-        run: |
-          pylint $(find . -name "*.py")
-
+        run: poetry run pylint .
