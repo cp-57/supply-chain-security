@@ -2,11 +2,13 @@
     Basic tests for the inclusion() function and related components.
 """
 
-import subprocess
+import shutil
+import subprocess  # nosec
 import pytest
 from jsonschema import validate
-
 from supply_chain_rekor_monitor.main import get_log_entry, inclusion
+
+python_path = shutil.which("python3")
 
 
 def test_get_log_entry_schema():
@@ -123,7 +125,7 @@ def test_inclusion_real_subprocess():
 
     result = subprocess.run(
         [
-            "python3",
+            python_path,
             "-m",
             "supply_chain_rekor_monitor.main",
             "--inclusion",
@@ -131,11 +133,14 @@ def test_inclusion_real_subprocess():
             "--artifact",
             artifact_filepath,
             "--debug",
-        ],
+        ], #nosec
         capture_output=True,
         text=True,
         check=True,
     )
 
-    assert result.returncode == 0, f"Inclusion verification failed: {result.stderr}"
-    assert "Inclusion verified" in result.stdout
+    if result.returncode != 0:
+        raise RuntimeError(f"Checkpoint retrieval failed: {result.stderr}")
+
+    if "Inclusion verified" not in result.stdout:
+        raise ValueError("Inclusion verification failed")

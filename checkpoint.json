@@ -2,19 +2,19 @@
     "inactiveShards": [
         {
             "rootHash": "4d006aa46efcb607dd51d900b1213754c50cc9251c3405c6c2561d9d6a2f3239",
-            "signedTreeHead": "rekor.sigstore.dev - 3904496407287907110\n4163431\nTQBqpG78tgfdUdkAsSE3VMUMySUcNAXGwlYdnWovMjk=\n\n\u2014 rekor.sigstore.dev wNI9ajBFAiAtb1QuD1fKmywS7HkW/NNUdBKbMnfuDDmg/WT4sdbhRgIhAPeQWF5dSlgKykZ2yulyjxRVoO/X2pR4chZgNb6bQF3N\n",
+            "signedTreeHead": "rekor.sigstore.dev - 3904496407287907110\n4163431\nTQBqpG78tgfdUdkAsSE3VMUMySUcNAXGwlYdnWovMjk=\n\n\u2014 rekor.sigstore.dev wNI9ajBGAiEA99P+LwDG9YVoAxGIWlKv71c+66yDezQiNiW6fcdd/zACIQD0lml2pyKXJcLQ3JW7/jnRLBPzQcYaLjnMjHrU2ah05Q==\n",
             "treeID": "3904496407287907110",
             "treeSize": 4163431
         },
         {
             "rootHash": "2b9c578071e120aa84c9858783daa671565e4165f3a7dfa199aad81940299d8e",
-            "signedTreeHead": "rekor.sigstore.dev - 2605736670972794746\n117740831\nK5xXgHHhIKqEyYWHg9qmcVZeQWXzp9+hmarYGUApnY4=\n\n\u2014 rekor.sigstore.dev wNI9ajBGAiEA0HxZU/DgEE5m80AG43a89a3WXW/vSDg1MnjkRak8xuQCIQDL3fkcGx1hw17ebJPFCIq5dAdBDTwPmKVmBSsW54lcbw==\n",
+            "signedTreeHead": "rekor.sigstore.dev - 2605736670972794746\n117740831\nK5xXgHHhIKqEyYWHg9qmcVZeQWXzp9+hmarYGUApnY4=\n\n\u2014 rekor.sigstore.dev wNI9ajBFAiApbE3dm2G0u0xlfCCobjUGgIMmCy0yfR6nWYgI6ddBrAIhAO3KelsbNmoFB6USKVLRuLavDG1QVbrU378bjhGzPUzR\n",
             "treeID": "2605736670972794746",
             "treeSize": 117740831
         }
     ],
-    "rootHash": "2e4ac2f14334a6578f336864582d1b12162fb41a1d2200709f1251ea5066ec61",
-    "signedTreeHead": "rekor.sigstore.dev - 1193050959916656506\n32415867\nLkrC8UM0plePM2hkWC0bEhYvtBodIgBwnxJR6lBm7GE=\n\n\u2014 rekor.sigstore.dev wNI9ajBGAiEAkFUe1SlgTyQraxib0d0qydBYWsTOrRH/VMp0ydnLDWoCIQC6E1AQyiNqS0D3gOjJBAy4rbcNx8AteFduTDyFfbBmUQ==\n",
+    "rootHash": "9220b33849352d942c3d68575424bada972cdf976a360a672fe7a7a6fde1ffb6",
+    "signedTreeHead": "rekor.sigstore.dev - 1193050959916656506\n32420614\nkiCzOEk1LZQsPWhXVCS62pcs35dqNgpnL+enpv3h/7Y=\n\n\u2014 rekor.sigstore.dev wNI9ajBFAiEA0e7UmyUfLdUqTJaU/HFoSDb+Tdr2smhRqFLhOMbG84cCIE17J1HgCif0nUJV+sAZyfnqiJnamqywreCRWmPm7pqS\n",
     "treeID": "1193050959916656506",
-    "treeSize": 32415867
+    "treeSize": 32420614
 }

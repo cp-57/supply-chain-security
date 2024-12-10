@@ -3,10 +3,13 @@
 """
 
 import json
-import subprocess
+import shutil
+import subprocess # nosec
 import pytest
 from jsonschema import validate, ValidationError
 from supply_chain_rekor_monitor.main import get_latest_checkpoint
+
+python_path = shutil.which("python3")
 
 
 def test_get_latest_checkpoint():
@@ -87,13 +90,14 @@ def test_get_latest_checkpoint_subprocess():
     }
 
     result = subprocess.run(
-        ["python3", "-m", "supply_chain_rekor_monitor.main", "--checkpoint"],
+        [python_path, "-m", "supply_chain_rekor_monitor.main", "--checkpoint"], #nosec
         capture_output=True,
         text=True,
         check=True,
     )
 
-    assert result.returncode == 0, f"Checkpoint retrieval failed: {result.stderr}"
+    if result.returncode != 0:
+        raise RuntimeError(f"Checkpoint retrieval failed: {result.stderr}")
 
     try:
         checkpoint_data = json.loads(result.stdout)
