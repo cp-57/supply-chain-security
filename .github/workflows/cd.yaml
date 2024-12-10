@@ -34,15 +34,11 @@ jobs:
           poetry build
           ls dist/
 
-      - name: Get Wheel File Name
-        id: get_wheel_name
-        run: echo "WHEEL_NAME=$(ls dist/*.whl)" >> $GITHUB_ENV
-
         - name: Get Wheel File Name
-        id: get_wheel_name
-        run: |
-          WHEEL_NAME=$(ls dist/*.whl)
-          echo "WHEEL_NAME=$WHEEL_NAME" >> $GITHUB_ENV
+          id: get_wheel_name
+          run: |
+            WHEEL_NAME=$(ls dist/*.whl)
+            echo "WHEEL_NAME=$WHEEL_NAME" >> $GITHUB_ENV
 
       - name: Publish to PyPI
         env:
