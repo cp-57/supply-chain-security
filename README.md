@@ -1,3 +1,5 @@
+![releases](https://github.com/cp-57/supply-chain-security/blob/main/.github/workflows/cd.yaml/badge.svg)
+
 Project Description
 This program verifies inclusion of artifact entries in a public transparency log, Rekor. 
 It also can verify that the correct signature is present in the transparency log or verify the consistency 
