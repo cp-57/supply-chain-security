@@ -35,7 +35,7 @@ jobs:
 
       - name: Generate SBOM using CycloneDX
         run: |
-          cyclonedx-py poetry > cyclonedx-sbom.json
+          poetry run cyclonedx-py poetry > cyclonedx-sbom.json
 
       - name: Generate SBOM Attestation
         uses: actions/attest-sbom@v2
