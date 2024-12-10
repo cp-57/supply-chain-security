@@ -48,5 +48,5 @@ jobs:
         run: trufflehog git file://. --no-verification --fail
 
       - name: Run PyTest
-        run: PYTHONPATH=. pytest --cov=.
+        run: PYTHONPATH=. poetry run pytest --cov=.
 
