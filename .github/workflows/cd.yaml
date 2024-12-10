@@ -44,11 +44,16 @@ jobs:
           subject-path: 'dist/*.whl'
           sbom-path: 'cyclonedx-sbom.json'
 
-      - name: Upload Artifacts
+      - name: Upload Build Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: build-artifacts
+          name: dist-folder
+          path: dist/
+
+      - name: Upload SBOM and Attestation
+        uses: actions/upload-artifact@v3
+        with:
+          name: sbom-and-attestation
           path: |
-            dist/
             cyclonedx-sbom.json
             sbom-attestation.bundle
