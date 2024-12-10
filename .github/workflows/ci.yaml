@@ -44,5 +44,5 @@ jobs:
       - name: Run TruffleHog
         run: |
           pip install trufflehog
-          trufflehog filesystem --repo-path=. || exit 1
+          trufflehog filesystem --repo-path . || exit 1
 
