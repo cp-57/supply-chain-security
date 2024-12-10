@@ -1,18 +1,17 @@
-name: Build, Publish, Attestation
+name: Build, Publish, and Attest on Tag
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
+    tags:
+      - '*'
 
 jobs:
   build-publish-attest:
     runs-on: ubuntu-latest
 
     permissions:
-      id-token: write    
-      contents: read        
+      id-token: write
+      contents: read
 
     steps:
       - name: Checkout Code
@@ -29,23 +28,10 @@ jobs:
           pip install poetry
           poetry install
 
-      - name: Build the Wheel
+      - name: Build the Project
         run: |
           poetry build
           ls dist/
-
-      - name: Get Wheel File Name
-        id: get_wheel_name
-        run: |
-          WHEEL_NAME=$(ls dist/*.whl)
-          echo "WHEEL_NAME=${WHEEL_NAME}" | sed 's/ /\\ /g' >> $GITHUB_ENV
-
-      - name: Publish to PyPI
-        env:
-          POETRY_PASSWORD: ${{ secrets.PYPI_TOKEN }}
-        run: |
-          poetry config pypi-token.pypi $POETRY_PASSWORD
-          poetry publish --build
 
       - name: Install CycloneDX
         run: |
@@ -54,31 +40,19 @@ jobs:
 
       - name: Generate SBOM
         run: |
-          cyclonedx-py --output-format json \
-            --output-file cyclonedx-sbom.json \
-            .
+          cyclonedx-py --output-format json --output-file cyclonedx-sbom.json .
 
-      - name: Attest the Build
-        env:
-          COSIGN_EXPERIMENTAL: "true"  
-        run: |
-          cosign attest-blob \
-            --bundle sbom-attestation.bundle \
-            --predicate cyclonedx-sbom.json \
-            --type cyclonedx \
-            $WHEEL_NAME
+      - name: Generate SBOM Attestation
+        uses: actions/attest-sbom@v2
+        with:
+          subject-path: 'dist/*.whl'
+          sbom-path: 'cyclonedx-sbom.json'
 
-      - name: Verify Attestation
-        run: |
-          cosign verify-blob-attestation \
-            --bundle sbom-attestation.bundle \
-            $WHEEL_NAME \
-            --check-claims
-
-      - name: Upload SBOM and Attestation
+      - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: sbom-and-attestation
+          name: build-artifacts
           path: |
+            dist/
             cyclonedx-sbom.json
             sbom-attestation.bundle
