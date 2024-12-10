@@ -4,7 +4,7 @@
 
 import json
 import shutil
-import subprocess # nosec
+import subprocess  # nosec
 import pytest
 from jsonschema import validate, ValidationError
 from supply_chain_rekor_monitor.main import get_latest_checkpoint
@@ -90,7 +90,7 @@ def test_get_latest_checkpoint_subprocess():
     }
 
     result = subprocess.run(
-        [python_path, "-m", "supply_chain_rekor_monitor.main", "--checkpoint"], #nosec
+        [python_path, "-m", "supply_chain_rekor_monitor.main", "--checkpoint"],  # nosec
         capture_output=True,
         text=True,
         check=True,

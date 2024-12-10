@@ -133,7 +133,7 @@ def test_inclusion_real_subprocess():
             "--artifact",
             artifact_filepath,
             "--debug",
-        ], #nosec
+        ],  # nosec
         capture_output=True,
         text=True,
         check=True,
