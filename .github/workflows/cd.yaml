@@ -57,3 +57,18 @@ jobs:
           path: |
             cyclonedx-sbom.json
             sbom-attestation.bundle
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            dist/*  
+            cyclonedx-sbom.json  
+            sbom-attestation.bundle  
+          body: |
+            This release includes:
+            - Build artifacts 
+            - SBOM 
+            - SBOM Attestation 
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
