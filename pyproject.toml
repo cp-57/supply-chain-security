@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "supply-chain-rekor-monitor"
-version = "4.1.0"
+version = "4.1.1"
 description = "This project can be used to verify inclusion of artifacts, whether a correct signature is present, or verify consistency in regards to the Rekor transparency logs."
 authors = ["cp-57 <109479938+cp-57@users.noreply.github.com>"]
 license = "Apache 2.0"

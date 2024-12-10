@@ -1,0 +1,82 @@
+name: CD: Build, Publish, Attestation
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build-publish-attest:
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write    
+      contents: read        
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install poetry
+          poetry install
+
+      - name: Build the Wheel
+        run: |
+          poetry build
+          ls dist/
+
+      - name: Get Wheel File Name
+        id: get_wheel_name
+        run: echo "WHEEL_NAME=$(ls dist/*.whl)" >> $GITHUB_ENV
+
+      - name: Publish to PyPI
+        env:
+          POETRY_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+        run: |
+          poetry config pypi-token.pypi $POETRY_PASSWORD
+          poetry publish --build
+
+      - name: Install CycloneDX
+        run: |
+          python -m pip install --upgrade pip
+          pip install cyclonedx-python-lib
+
+      - name: Generate SBOM
+        run: |
+          cyclonedx-py --output-format json \
+            --output-file cyclonedx-sbom.json \
+            .
+
+      - name: Attest the Build
+        env:
+          COSIGN_EXPERIMENTAL: "true"  
+        run: |
+          cosign attest-blob \
+            --bundle sbom-attestation.bundle \
+            --predicate cyclonedx-sbom.json \
+            --type cyclonedx \
+            $WHEEL_NAME
+
+      - name: Verify Attestation
+        run: |
+          cosign verify-blob-attestation \
+            --bundle sbom-attestation.bundle \
+            $WHEEL_NAME \
+            --check-claims
+
+      - name: Upload SBOM and Attestation
+        uses: actions/upload-artifact@v3
+        with:
+          name: sbom-and-attestation
+          path: |
+            cyclonedx-sbom.json
+            sbom-attestation.bundle
